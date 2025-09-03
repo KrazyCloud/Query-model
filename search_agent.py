@@ -150,4 +150,4 @@ def agent_pipeline(request: QueryRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="10.226.54.4", port=9000)
+    uvicorn.run(app, host="0.0.0.0", port=9000)
