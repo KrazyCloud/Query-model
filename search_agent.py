@@ -1,4 +1,3 @@
-# main.py
 from fastapi import FastAPI, Request, HTTPException
 from pydantic import BaseModel
 from typing import List
