@@ -145,3 +145,8 @@ def agent_pipeline(request: QueryRequest):
         keywords=refined_keywords,
         boolean_query=boolean_query
     )
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=9000)
