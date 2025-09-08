@@ -3,8 +3,9 @@ version: "3.9"
 services:
   api:
     build: .
-    network_mode: host
     container_name: search_agent_pipeline 
     restart: always 
     ports:
       - "9000:9000"
+    extra_hosts:
+      - "host.docker.internal:172.31.37.168"
