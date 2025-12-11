@@ -2,7 +2,7 @@ version: "3.9"
 services:
   api:
     build: .
-    container_name: search_pipeline
+    container_name: query_pipeline
     restart: always 
     ports:
       - "9001:9001"
