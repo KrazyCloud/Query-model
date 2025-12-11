@@ -5,4 +5,4 @@ services:
     container_name: query_pipeline
     restart: always 
     ports:
-      - "9001:9001"
+      - "9000:9000"
