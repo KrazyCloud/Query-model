@@ -45,7 +45,7 @@ def is_ascii(s: str) -> bool:
     return all(ord(c) < 128 for c in s if c.isalpha())
 
 
-def fetch_keywords_from_api(topic: str, api_url="http://google_pipeline:9002/search-keywords"):
+def fetch_keywords_from_api(topic: str, api_url="http://172.31.32.224:9002/search-keywords"):
     """Fetch initial keywords from external API. Return [] if not found."""
     try:
         response = requests.get(f"{api_url}?keyword={quote(topic)}")
