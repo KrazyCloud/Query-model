@@ -45,7 +45,7 @@ def is_ascii(s: str) -> bool:
     return all(ord(c) < 128 for c in s if c.isalpha())
 
 
-def fetch_keywords_from_api(topic: str, api_url="http://172.31.32.224:9000/search-keywords"):
+def fetch_keywords_from_api(topic: str, api_url="http://google_pipeline:9002/search-keywords"):
     """Fetch initial keywords from external API. Return [] if not found."""
     try:
         response = requests.get(f"{api_url}?keyword={quote(topic)}")
@@ -64,7 +64,7 @@ def fetch_keywords_from_api(topic: str, api_url="http://172.31.32.224:9000/searc
         return [], ""
 
 
-def expand_keywords_mistral(topic, context="", model_url="http://localhost:11434/api/generate"):
+def expand_keywords_mistral(topic, context="", model_url="http://host.docker.internal:11434/api/generate"):
     """Generate refined keywords using Mistral model with context."""
     english_prompt = f"""
     You are a keyword generator for social media monitoring.
@@ -145,8 +145,3 @@ def agent_pipeline(request: QueryRequest):
         keywords=refined_keywords,
         boolean_query=boolean_query
     )
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=9000)
