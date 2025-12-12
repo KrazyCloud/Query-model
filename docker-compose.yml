@@ -3,6 +3,8 @@ services:
   api:
     build: .
     container_name: query_pipeline
-    restart: always 
+    restart: always
     ports:
       - "9000:9000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
