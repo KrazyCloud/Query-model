@@ -17,7 +17,7 @@ pipeline {
 
         stage('Deploy on EC2') {
             steps {
-                sshagent(credentials: ['gpu-ec2-ssh']) {
+                sshagent(credentials: ['gpu-ec2']) {
                     sh """
 ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
 set -e
