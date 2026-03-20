@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         EC2_USER = "ubuntu"
-        EC2_HOST = "113.205.79.188"
+        EC2_HOST = "13.205.79.188"
         APP_DIR  = "/home/ubuntu/Query-model"
     }
 
