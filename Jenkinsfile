@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         EC2_USER = "ubuntu"
-        EC2_HOST = "13.201.64.59"
-        APP_DIR  = "/home/ubuntu/Query-model"
+        EC2_HOST = "113.205.79.188"
+        APP_DIR  = "/home/ubuntu/pipeline/Query-model"
     }
 
     stages {
