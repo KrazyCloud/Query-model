@@ -64,7 +64,7 @@ def fetch_keywords_from_api(topic: str, api_url="http://172.31.45.249:9000/searc
         return [], ""
 
 
-def expand_keywords_mistral(topic, context="", model_url="http://13.205.79.188:11434/api/generate"):
+def expand_keywords_mistral(topic, context="", model_url="http://172.31.14.196:11434/api/generate"):
     """Generate refined keywords using Mistral model with context."""
     english_prompt = f"""
     You are a keyword generator for social media monitoring.
