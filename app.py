@@ -6,6 +6,11 @@ from itertools import combinations
 import re
 from urllib.parse import quote
 from fastapi.middleware.cors import CORSMiddleware
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 # FastAPI app
 app = FastAPI()
@@ -48,19 +53,26 @@ def is_ascii(s: str) -> bool:
 def fetch_keywords_from_api(topic: str, api_url="http://52.66.204.166:9000/search-keywords"):
     """Fetch initial keywords from external API. Return [] if not found."""
     try:
+        logger.info(f"Fetching keywords from API for topic: {topic}")
+
         response = requests.get(f"{api_url}?keyword={quote(topic)}")
-        if response.status_code == 404:  # API returns not found
+        if response.status_code == 404:
+            logger.info(f"API returned 404 for topic: {topic}")
             return [], ""
+        
+        logger.info(f"API response for topic: {topic}")
         response.raise_for_status()
         data = response.json()
         news_content = data.get("news", "")
         if not news_content:  # API returned but no useful content
+            logger.info(f"API returned empty news content for topic: {topic}")
             return [], ""
         keywords = re.findall(r'\b[A-Z][a-zA-Z0-9&]+\b', news_content)
         keywords = list(dict.fromkeys(keywords))
         return keywords, news_content
     except Exception:
         # Fail gracefully (instead of raising HTTPException) so pipeline can fallback
+        logger.error(f"Error occurred while fetching keywords for topic: {topic}")
         return [], ""
 
 
@@ -95,9 +107,12 @@ def expand_keywords_mistral(topic, context="", model_url="http://44.219.181.5:11
     - Only return one keyword/hashtag per line, no explanations.
     """
 
+    logger.info(f"Generating keywords for topic: {topic}")
     prompt = english_prompt if is_ascii(topic) else indian_prompt
 
     payload = {"model": "mistral-small3.1:latest", "prompt": prompt, "stream": False}
+    logger.info(f"Sending request to Mistral model for topic: {topic}")
+
     response = requests.post(model_url, json=payload)
     result = response.json()['response']
     keywords = []
@@ -126,20 +141,25 @@ def build_boolean_queries(keywords, mode="OR"):
 def agent_pipeline(request: QueryRequest):
     topic = request.topic
 
+    logger.info(f"Received query for topic Started: {topic}")
+
     # 1️⃣ Try external API first
+    logger.info(f"Fetching Update News from Google API for topic: {topic}")
     initial_keywords, news_content = fetch_keywords_from_api(topic)
-    print(f"Initial keywords: {len(initial_keywords)}, News content: {len(news_content)}")
+    logger.info(f"Initial keywords: {len(initial_keywords)}, News content: {len(news_content)}")
 
     # 2️⃣ If API gave nothing, fallback to mistral without context
     if not initial_keywords and not news_content:
         refined_keywords = expand_keywords_mistral(topic)
+        logger.info(f"Generated keywords without context: {len(refined_keywords)}")
     else:
         refined_keywords = expand_keywords_mistral(topic, context=", ".join(initial_keywords) or news_content)
+        logger.info(f"Generated keywords with context: {len(refined_keywords)}")
 
     # 3️⃣ Build boolean query
     boolean_query = build_boolean_queries(refined_keywords, mode="OR")
 
-    print(f"Completed processing for topic: {topic}, keywords: {len(refined_keywords)}")
+    logger.info(f"Completed processing for topic: {topic}, keywords: {len(refined_keywords)}")
     
     return QueryResponse(
         keywords=refined_keywords,
