@@ -2,11 +2,11 @@ from logs import logger
 import requests
 import re
 from urllib.parse import quote
-from config.env_load import GOOGLE_API_IP
+from config.env_load import GOOGLE_SERVER_IP
 import os
 
 
-def fetch_keywords_from_api(topic: str, api_url=f"http://{GOOGLE_API_IP}:9000/google-search"):
+def fetch_keywords_from_api(topic: str, api_url=f"http://{GOOGLE_SERVER_IP}:9000/google-search"):
     """Fetch initial keywords from external API. Return [] if not found."""
     try:
         logger.info(f"Fetching keywords from API for topic: {topic}")
