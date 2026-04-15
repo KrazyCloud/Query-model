@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 9000
 
 #start FastAPI server on port 9000
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "9000"]
+CMD ["uvicorn", "app.mainapp", "--host", "0.0.0.0", "--port", "9000"]
