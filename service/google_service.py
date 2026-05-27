@@ -11,7 +11,7 @@ def fetch_keywords_from_api(topic: str, api_url=f"http://{GOOGLE_SERVER_IP}:9000
     try:
         logger.info(f"Fetching keywords from API for topic: {topic}")
 
-        response = requests.get(f"{api_url}?keyword={quote(topic)}")
+        response = requests.get(f"{api_url}?keyword={quote(topic)}", timeout=120)
         if response.status_code == 404:
             logger.info(f"API returned 404 for topic: {topic}")
             return [], ""
