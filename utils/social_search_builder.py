@@ -140,26 +140,6 @@ def generate_social_search_links():
 
                 "keywords": []
             },
-
-            "positive_sentiment": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" :)",
-
-                "keywords": []
-            },
-
-            "negative_sentiment": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" :(",
-
-                "keywords": []
-            }
         },
 
         # =================================================
