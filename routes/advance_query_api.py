@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from schema.query_schema import QueryRequest, QueryResponse
+
 from service.mistral_keyword_expander import expand_keywords_mistral
 from service.google_service import fetch_keywords_from_api
 
@@ -21,12 +22,17 @@ query_router = APIRouter(
 search_cache = {}
 
 
-@query_router.post("/agent/query", response_model=QueryResponse)
+@query_router.post(
+    "/agent/query",
+    response_model=QueryResponse
+)
 def agent_pipeline(request: QueryRequest):
 
     topic = request.topic.strip()
 
-    logger.info(f"Received query for topic: {topic}")
+    logger.info(
+        f"Received query for topic: {topic}"
+    )
 
     cache_key = topic.lower()
 
@@ -36,7 +42,9 @@ def agent_pipeline(request: QueryRequest):
 
     if cache_key in search_cache:
 
-        logger.info(f"Returning cached result for: {topic}")
+        logger.info(
+            f"Returning cached result for: {topic}"
+        )
 
         return search_cache[cache_key]
 
@@ -44,9 +52,13 @@ def agent_pipeline(request: QueryRequest):
     # GOOGLE FETCH
     # =====================================================
 
-    logger.info(f"Fetching Google API data for topic: {topic}")
+    logger.info(
+        f"Fetching Google API data for topic: {topic}"
+    )
 
-    initial_keywords, news_content = fetch_keywords_from_api(topic)
+    initial_keywords, news_content = fetch_keywords_from_api(
+        topic
+    )
 
     logger.info(
         f"Initial keywords: {len(initial_keywords)}, "
@@ -59,17 +71,24 @@ def agent_pipeline(request: QueryRequest):
 
     if not initial_keywords and not news_content:
 
-        logger.info("Using fallback keyword generation")
+        logger.info(
+            "Using fallback keyword generation"
+        )
 
-        refined_keywords = expand_keywords_mistral(topic)
+        refined_keywords = expand_keywords_mistral(
+            topic
+        )
 
     else:
 
-        logger.info("Using contextual keyword generation")
+        logger.info(
+            "Using contextual keyword generation"
+        )
 
         refined_keywords = expand_keywords_mistral(
             topic,
-            context=", ".join(initial_keywords) or news_content
+            context=", ".join(initial_keywords)
+            or news_content
         )
 
     # =====================================================
@@ -87,7 +106,8 @@ def agent_pipeline(request: QueryRequest):
     )
 
     logger.info(
-        f"Final keywords count: {len(refined_keywords)}"
+        f"Final keywords count: "
+        f"{len(refined_keywords)}"
     )
 
     # =====================================================
@@ -99,18 +119,19 @@ def agent_pipeline(request: QueryRequest):
         mode="OR"
     )
 
-    logger.info("Boolean query generated")
-
-    # =====================================================
-    # SOCIAL LINKS
-    # =====================================================
-
-    social_links = generate_social_search_links(
-        topic,
-        refined_keywords
+    logger.info(
+        "Boolean query generated"
     )
 
-    logger.info("Social search links generated")
+    # =====================================================
+    # QUERY TEMPLATES
+    # =====================================================
+
+    social_links = generate_social_search_links()
+
+    logger.info(
+        "Social query templates generated"
+    )
 
     # =====================================================
     # FINAL RESPONSE
