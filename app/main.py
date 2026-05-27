@@ -11,7 +11,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from routes.query_api import query_router
+from routes.advance_query_api import query_router
 
 app.include_router(query_router)
 
