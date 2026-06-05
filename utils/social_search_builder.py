@@ -1,3 +1,5 @@
+# TODO Pintrest, Instagram be added
+
 def generate_social_search_links():
 
     return {
@@ -9,31 +11,22 @@ def generate_social_search_links():
         "twitter": {
 
             "exact_phrase": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\"",
+                "filters":
+                    "\"{keyword}\"",
 
                 "keywords": []
             },
 
             "hashtag_phrase": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "({query})",
+                "filters":
+                    "({keyword})",
 
                 "keywords": []
             },
 
             "latest": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\"",
+                "filters":
+                    "\"{keyword}\"",
 
                 "extra":
                     "&f=live",
@@ -42,101 +35,71 @@ def generate_social_search_links():
             },
 
             "verified_accounts": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" filter:verified",
+                "filters":
+                    "\"{keyword}\" filter:verified",
 
                 "keywords": []
             },
 
             "viral_posts": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" min_faves:1000",
+                "filters":
+                    "\"{keyword}\" min_faves:1000",
 
                 "keywords": []
             },
 
             "videos_only": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" filter:videos",
+                "filters":
+                    "\"{keyword}\" filter:videos",
 
                 "keywords": []
             },
 
             "images_only": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" filter:images",
+                "filters":
+                    "\"{keyword}\" filter:images",
 
                 "keywords": []
             },
 
             "links_only": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" filter:links",
+                "filters":
+                    "\"{keyword}\" filter:links",
 
                 "keywords": []
             },
 
             "hindi_only": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" lang:hi",
+                "filters":
+                    "\"{keyword}\" lang:hi",
 
                 "keywords": []
             },
 
             "english_only": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" lang:en",
+                "filters":
+                    "\"{keyword}\" lang:en",
 
                 "keywords": []
             },
 
             "exclude_memes": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" -meme",
+                "filters":
+                    "\"{keyword}\" -meme",
 
                 "keywords": []
             },
 
             "exclude_replies": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" -filter:replies",
+                "filters":
+                    "\"{keyword}\" -filter:replies",
 
                 "keywords": []
             },
 
             "replies_only": {
-                "base_url":
-                    "https://x.com/search?q=",
-
-                "template":
-                    "\"{query}\" filter:replies",
+                "filters":
+                    "\"{keyword}\" filter:replies",
 
                 "keywords": []
             },
@@ -149,61 +112,43 @@ def generate_social_search_links():
         "youtube": {
 
             "basic": {
-                "base_url":
-                    "https://www.youtube.com/results?search_query=",
-
-                "template":
-                    "{query}",
+                "filters":
+                    "{keyword}",
 
                 "keywords": []
             },
 
             "news": {
-                "base_url":
-                    "https://www.youtube.com/results?search_query=",
-
-                "template":
-                    "{query} news",
+                "filters":
+                    "{keyword} news",
 
                 "keywords": []
             },
 
             "debate": {
-                "base_url":
-                    "https://www.youtube.com/results?search_query=",
-
-                "template":
-                    "{query} debate",
+                "filters":
+                    "{keyword} debate",
 
                 "keywords": []
             },
 
             "analysis": {
-                "base_url":
-                    "https://www.youtube.com/results?search_query=",
-
-                "template":
-                    "{query} analysis",
+                "filters":
+                    "{keyword} analysis",
 
                 "keywords": []
             },
 
             "shorts": {
-                "base_url":
-                    "https://www.youtube.com/results?search_query=",
-
-                "template":
-                    "{query} shorts",
+                "filters":
+                    "{keyword} shorts",
 
                 "keywords": []
             },
 
             "live": {
-                "base_url":
-                    "https://www.youtube.com/results?search_query=",
-
-                "template":
-                    "{query} live",
+                "filters":
+                    "{keyword} live",
 
                 "keywords": []
             }
@@ -216,21 +161,15 @@ def generate_social_search_links():
         "reddit": {
 
             "exact_phrase": {
-                "base_url":
-                    "https://www.reddit.com/search/?q=",
-
-                "template":
-                    "\"{query}\"",
+                "filters":
+                    "\"{keyword}\"",
 
                 "keywords": []
             },
 
             "top_posts": {
-                "base_url":
-                    "https://www.reddit.com/search/?q=",
-
-                "template":
-                    "\"{query}\"",
+                "filters":
+                    "\"{keyword}\"",
 
                 "extra":
                     "&sort=top",
@@ -239,11 +178,8 @@ def generate_social_search_links():
             },
 
             "new_posts": {
-                "base_url":
-                    "https://www.reddit.com/search/?q=",
-
-                "template":
-                    "\"{query}\"",
+                "filters":
+                    "\"{keyword}\"",
 
                 "extra":
                     "&sort=new",
@@ -252,11 +188,8 @@ def generate_social_search_links():
             },
 
             "india_discussions": {
-                "base_url":
-                    "https://www.reddit.com/search/?q=",
-
-                "template":
-                    "\"{query}\" subreddit:india",
+                "filters":
+                    "\"{keyword}\" subreddit:india",
 
                 "keywords": []
             }
@@ -269,31 +202,22 @@ def generate_social_search_links():
         "quora": {
 
             "exact_phrase": {
-                "base_url":
-                    "https://www.quora.com/search?q=",
-
-                "template":
-                    "\"{query}\"",
+                "filters":
+                    "\"{keyword}\"",
 
                 "keywords": []
             },
 
             "politics": {
-                "base_url":
-                    "https://www.quora.com/search?q=",
-
-                "template":
-                    "{query} politics",
+                "filters":
+                    "{keyword} politics",
 
                 "keywords": []
             },
 
             "public_opinion": {
-                "base_url":
-                    "https://www.quora.com/search?q=",
-
-                "template":
-                    "{query} public opinion",
+                "filters":
+                    "{keyword} public opinion",
 
                 "keywords": []
             }
