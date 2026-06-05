@@ -26,10 +26,7 @@ def generate_social_search_links():
 
             "latest": {
                 "filters":
-                    "\"{keyword}\"",
-
-                "extra":
-                    "&f=live",
+                    "\"{keyword}\"&f=live",
 
                 "keywords": []
             },
@@ -169,20 +166,14 @@ def generate_social_search_links():
 
             "top_posts": {
                 "filters":
-                    "\"{keyword}\"",
-
-                "extra":
-                    "&sort=top",
+                    "\"{keyword}\"&sort=top",
 
                 "keywords": []
             },
 
             "new_posts": {
                 "filters":
-                    "\"{keyword}\"",
-
-                "extra":
-                    "&sort=new",
+                    "\"{keyword}\"&sort=new",
 
                 "keywords": []
             },
