@@ -7,9 +7,7 @@ from config.env_load import MISTRAL_API_IP
 
 def generate_topic_description(topic, context="", model_url=f"http://{MISTRAL_API_IP}:11434/api/generate"):
     """
-    Generate a structured annotation rubric for a sentiment/stance classifier:
-    - topic_description: analyst note covering stance landscape + traps
-    - examples: few-shot demonstrations with the multi-label schema
+    Generate a structured annotation rubric for a sentiment/stance classifier.
     Returns {"topic_description": str, "examples": [...]}.
     """
     prompt = f"""
@@ -34,21 +32,24 @@ Produce a JSON object with exactly two keys:
    Include at least one off_topic/spam example and one example that demonstrates a trap from the description.
 
 Rules:
-- Base the description on the provided context. Do not invent specific named people or hashtags that are not implied by the topic or context.
+- Base the description on the provided context. Prefer hashtags and phrases that appear in or are directly implied by the context.
+- IMPORTANT: Some movements adopt an insult as their own badge. Before assigning stance, check the context: if a seemingly-derogatory term (an animal, an insult) is used by supporters about themselves, then that language is PRO the movement, and attacks come from the opposite framing. State which case applies in the description.
 - Output ONLY the raw JSON object. No markdown, no code fences, no preamble.
 """
     logger.info(f"Generating topic description rubric for: {topic}")
-    payload = {"model": "mistral-small3.1:latest", "prompt": prompt, "stream": False}
+    payload = {
+        "model": "mistral-small3.1:latest",
+        "prompt": prompt,
+        "stream": False,
+        "options": {"temperature": 0.2},
+    }
 
     try:
         response = requests.post(model_url, json=payload, timeout=180)
         response.raise_for_status()
         raw = response.json()["response"].strip()
 
-        # Strip code fences if the model added them anyway
         raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
-
-        # Grab the outermost JSON object in case of stray text
         match = re.search(r"\{.*\}", raw, re.DOTALL)
         if match:
             raw = match.group(0)
