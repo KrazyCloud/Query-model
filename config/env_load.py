@@ -6,3 +6,4 @@ load_dotenv()
 
 MISTRAL_API_IP = os.getenv("MISTRAL_API_IP")
 GOOGLE_SERVER_IP = os.getenv("GOOGLE_SERVER_IP")
+SERPAPI_API_KEY = os.getenv("SERPAPI_API_KEY")
