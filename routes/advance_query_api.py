@@ -7,6 +7,7 @@ from service.google_service import fetch_keywords_from_api
 
 from utils.query_builder import build_boolean_queries
 from utils.social_search_builder import generate_social_search_links
+from service.mistral_topic_describer import generate_topic_description
 
 from logs import logger
 
@@ -134,13 +135,26 @@ def agent_pipeline(request: QueryRequest):
     )
 
     # =====================================================
+    # TOPIC DESCRIPTION RUBRIC
+    # =====================================================
+
+    rubric = generate_topic_description(
+        topic,
+        context=", ".join(initial_keywords) or news_content
+    )
+
+    logger.info("Topic description rubric generated")
+
+    # =====================================================
     # FINAL RESPONSE
     # =====================================================
 
     response = QueryResponse(
         keywords=refined_keywords,
         boolean_query=boolean_query,
-        social_links=social_links
+        social_links=social_links,
+        topic_description=rubric["topic_description"],
+        examples=rubric["examples"]
     )
 
     # =====================================================
