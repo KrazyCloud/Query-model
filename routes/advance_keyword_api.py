@@ -23,7 +23,7 @@ class UpdateKeywordsResponse(BaseModel):
 
 
 @update_keywords_router.post(
-    "/update_keywords",
+    "/agent/update-keywords",
     response_model=UpdateKeywordsResponse
 )
 def update_keywords(request: UpdateKeywordsRequest):
