@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 class QueryRequest(BaseModel):
     topic: str
@@ -19,10 +19,6 @@ class QueryResponse(BaseModel):
     examples: List[ExampleItem] = []
     context_source: str = ""
 
-class ContextUpdateRequest(BaseModel):
-    topic: str
-
-
 class ExampleItem(BaseModel):
     text: str
     relevance: str
@@ -30,8 +26,15 @@ class ExampleItem(BaseModel):
     sentiment: str
     spam: bool
 
+class ContextUpdateRequest(BaseModel):
+    topic: str
+    update_context: Optional[bool] = None
+    update_keywords: Optional[bool] = None
+    context_source: str = ""
+
 
 class ContextUpdateResponse(BaseModel):
-    topic_description: str
-    examples: List[ExampleItem]
-    context_source: str
+    topic_description: str = ""
+    examples: List[ExampleItem] = []
+    context_source: str = ""
+    keywords: List[str] = []

@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.advance_query_api import query_router
 from routes.context_update_api import context_router
 from routes.advance_keyword_api import update_keywords_router
+from routes.context_and_keywords import model_context_router
 
 app = FastAPI()
 
@@ -18,3 +19,4 @@ app.add_middleware(
 app.include_router(query_router)
 app.include_router(context_router)
 app.include_router(update_keywords_router)
+app.include_router(model_context_router)

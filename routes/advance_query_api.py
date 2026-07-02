@@ -1,3 +1,5 @@
+# Query Generator
+
 from fastapi import APIRouter
 
 from schema.query_schema import QueryRequest, QueryResponse
