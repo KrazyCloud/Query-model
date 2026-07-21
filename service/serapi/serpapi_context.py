@@ -1,3 +1,4 @@
+# serpapi_context.py
 import re
 import serpapi
 from logs import logger
@@ -13,7 +14,7 @@ def fetch_ai_mode_context(topic: str) -> str:
     """
     Pull grounding context for a topic from Google AI Mode via SerpAPI.
     Flattens text_blocks (paragraphs, headings, lists) into plain prose.
-    Returns "" on any failure so the pipeline can fall back.
+    Returns "" on any failure so the pipeline can fall back.c
     """
     try:
         logger.info(f"Fetching AI-mode context for topic: {topic}")
