@@ -39,7 +39,7 @@ def fetch_ai_mode_context(topic: str) -> str:
                         parts.append("- " + _clean(snippet))
 
         context = "\n".join(parts)
-        logger.info(f"AI-mode context length: {len(context)} for topic: {topic}")
+        logger.info(f"AI-mode context length: {len(context)} for topic: {topic} (context: {context})")
         return context
     except Exception:
         logger.error(f"Error fetching AI-mode context for topic: {topic}")
