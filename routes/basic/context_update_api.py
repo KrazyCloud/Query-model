@@ -7,7 +7,7 @@ from schema.query_schema import (
 
 from service.serapi.serpapi_context import fetch_ai_mode_context
 from service.serapi.google_service import fetch_keywords_from_api
-from service.keywords.mistral_topic_describer import generate_topic_description
+from service.context_keywords.mistral_topic_describer import generate_topic_description
 
 from logs import logger
 

@@ -10,7 +10,7 @@ from service.serapi.google_service import fetch_keywords_from_api
 from utils.query_builder import build_boolean_queries
 from utils.social_search_builder import generate_social_search_links
 from service.serapi.serpapi_context import fetch_ai_mode_context
-from service.keywords.mistral_topic_describer import generate_topic_description
+from service.context_keywords.mistral_topic_describer import generate_topic_description
 
 from logs import logger
 
