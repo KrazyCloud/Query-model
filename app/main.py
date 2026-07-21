@@ -17,8 +17,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(query_router)
-app.include_router(context_router)
-app.include_router(update_keywords_router)
-app.include_router(model_context_router)
+# app.include_router(query_router)
+# app.include_router(context_router)
+# app.include_router(update_keywords_router)
+# app.include_router(model_context_router)
 app.include_router(topic_orchestrator_router)
