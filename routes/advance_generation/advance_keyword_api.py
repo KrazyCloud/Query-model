@@ -4,7 +4,7 @@ from typing import List
 
 import requests
 
-from service.advance_keywords_search import keywords_mistral
+from service.keywords.advance_keywords_search import keywords_mistral
 from logs import logger
 
 update_keywords_router = APIRouter(

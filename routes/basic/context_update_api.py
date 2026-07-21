@@ -5,9 +5,9 @@ from schema.query_schema import (
     ContextUpdateResponse,
 )
 
-from service.serpapi_context import fetch_ai_mode_context
-from service.google_service import fetch_keywords_from_api
-from service.mistral_topic_describer import generate_topic_description
+from service.serapi.serpapi_context import fetch_ai_mode_context
+from service.serapi.google_service import fetch_keywords_from_api
+from service.keywords.mistral_topic_describer import generate_topic_description
 
 from logs import logger
 

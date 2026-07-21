@@ -4,13 +4,13 @@ from fastapi import APIRouter
 
 from schema.query_schema import QueryRequest, QueryResponse
 
-from service.mistral_keyword_expander import expand_keywords_mistral
-from service.google_service import fetch_keywords_from_api
+from service.keyword.mistral_keyword_expander import expand_keywords_mistral
+from service.serapi.google_service import fetch_keywords_from_api
 
 from utils.query_builder import build_boolean_queries
 from utils.social_search_builder import generate_social_search_links
-from service.serpapi_context import fetch_ai_mode_context
-from service.mistral_topic_describer import generate_topic_description
+from service.serapi.serpapi_context import fetch_ai_mode_context
+from service.keywords.mistral_topic_describer import generate_topic_description
 
 from logs import logger
 
