@@ -50,9 +50,7 @@ def update_topic_context(request: ContextUpdateRequest):
     examples = []
     keywords = []
 
-    # --------------------------------------------------
     # FULL / CONTEXT_ONLY
-    # --------------------------------------------------
 
     if request.mode in (
         ContextMode.FULL,
@@ -94,9 +92,7 @@ def update_topic_context(request: ContextUpdateRequest):
             and REQUIRED_EXAMPLE_KEYS <= e.keys()
         ]
 
-    # --------------------------------------------------
     # KEYWORD GENERATION
-    # --------------------------------------------------
 
     if request.mode in (
         ContextMode.FULL,
@@ -130,9 +126,7 @@ def update_topic_context(request: ContextUpdateRequest):
                 detail="keyword generation failed",
             )
 
-    # --------------------------------------------------
     # RESPONSE
-    # --------------------------------------------------
 
     return ContextUpdateResponse(
         topic_description=topic_description,
