@@ -60,9 +60,10 @@ Rules:
             "topic_description": parsed.get("topic_description", "").strip(),
             "examples": parsed.get("examples", []),
         }
-    except json.JSONDecodeError:
-        logger.error(f"Failed to parse rubric JSON for topic: {topic}")
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to parse rubric JSON for topic: {topic}: {e}")
+        logger.error(f"Raw model output:\n{raw}")
         return {"topic_description": "", "examples": []}
-    except Exception:
-        logger.error(f"Error generating topic description for: {topic}")
+    except Exception as e:
+        logger.error(f"Error generating topic description for: {topic}: {e}")
         return {"topic_description": "", "examples": []}

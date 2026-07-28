@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 from schema.query_schema import QueryRequest, QueryResponse
 
-from service.keyword.mistral_keyword_expander import expand_keywords_mistral
+from old_code.keyword.mistral_keyword_expander import expand_keywords_mistral
 from service.serapi.google_service import fetch_keywords_from_api
 
 from utils.query_builder import build_boolean_queries
