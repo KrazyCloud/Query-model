@@ -6,9 +6,9 @@ import re
 from utils.asci_helper import is_ascii
 from config.env_load import MISTRAL_API_IP
 
-MISTRAL_MODEL = "mistral-small3.1:latest"
+MISTRAL_MODEL = "mistralai/Mistral-Small-3.1-24B-Instruct-2503"
 REQUEST_TIMEOUT_SECONDS = 60
-MAX_CONTEXT_CHARS = 2000  # truncate long context_source so it doesn't drown out instructions
+MAX_CONTEXT_CHARS = 2000
 
 
 def _build_prompt(topic: str, context: str, indian_language: bool) -> str:
@@ -64,20 +64,25 @@ def keywords_mistral(topic: str, context_source: str = "", model_url: str = None
     """
 
     if model_url is None:
-        model_url = f"http://{MISTRAL_API_IP}:11434/api/generate"
+        model_url = f"http://{MISTRAL_API_IP}:8000/v1/completions"
 
     truncated_context = (context_source or "")[:MAX_CONTEXT_CHARS]
     indian_language = not is_ascii(topic)
     prompt = _build_prompt(topic, truncated_context, indian_language)
 
-    payload = {"model": MISTRAL_MODEL, "prompt": prompt, "stream": False}
+    payload = {
+        "model": MISTRAL_MODEL,
+        "prompt": prompt,
+        "max_tokens": 1024,
+        "stream": False,
+    }
 
     logger.info(f"Requesting keywords from Mistral for topic: {topic}")
 
     try:
         response = requests.post(model_url, json=payload, timeout=REQUEST_TIMEOUT_SECONDS)
         response.raise_for_status()
-        result = response.json()["response"]
+        result = response.json()["choices"][0]["text"]
     except requests.Timeout:
         logger.error(f"Mistral request timed out for topic: {topic}")
         raise

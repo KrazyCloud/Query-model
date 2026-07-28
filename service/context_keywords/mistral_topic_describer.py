@@ -6,7 +6,7 @@ import requests
 from config.env_load import MISTRAL_API_IP
 
 
-def generate_topic_description(topic, context="", model_url=f"http://{MISTRAL_API_IP}:11434/api/generate"):
+def generate_topic_description(topic, context="", model_url=f"http://{MISTRAL_API_IP}:8000/v1/completions"):
     """
     Generate a structured annotation rubric for a sentiment/stance classifier.
     Returns {"topic_description": str, "examples": [...]}.
@@ -39,16 +39,17 @@ Rules:
 """
     logger.info(f"Generating topic description rubric for: {topic}")
     payload = {
-        "model": "mistral-small3.1:latest",
+        "model": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
         "prompt": prompt,
+        "max_tokens": 1024,
+        "temperature": 0.2,
         "stream": False,
-        "options": {"temperature": 0.2},
     }
 
     try:
         response = requests.post(model_url, json=payload, timeout=180)
         response.raise_for_status()
-        raw = response.json()["response"].strip()
+        raw = response.json()["choices"][0]["text"].strip()
 
         raw = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip())
         match = re.search(r"\{.*\}", raw, re.DOTALL)
