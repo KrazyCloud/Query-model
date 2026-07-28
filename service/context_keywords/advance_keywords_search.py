@@ -64,7 +64,7 @@ def keywords_mistral(topic: str, context_source: str = "", model_url: str = None
     """
 
     if model_url is None:
-        model_url = f"http://{MISTRAL_API_IP}:8000/v1/completions"
+        model_url = f"http://{MISTRAL_API_IP}:8000/v1/chat/completions"
 
     truncated_context = (context_source or "")[:MAX_CONTEXT_CHARS]
     indian_language = not is_ascii(topic)
@@ -72,8 +72,9 @@ def keywords_mistral(topic: str, context_source: str = "", model_url: str = None
 
     payload = {
         "model": MISTRAL_MODEL,
-        "prompt": prompt,
+        "messages": [{"role": "user", "content": prompt}],
         "max_tokens": 1024,
+        "temperature": 0.3,
         "stream": False,
     }
 
@@ -82,7 +83,7 @@ def keywords_mistral(topic: str, context_source: str = "", model_url: str = None
     try:
         response = requests.post(model_url, json=payload, timeout=REQUEST_TIMEOUT_SECONDS)
         response.raise_for_status()
-        result = response.json()["choices"][0]["text"]
+        result = response.json()["choices"][0]["message"]["content"]
     except requests.Timeout:
         logger.error(f"Mistral request timed out for topic: {topic}")
         raise
@@ -98,14 +99,11 @@ def keywords_mistral(topic: str, context_source: str = "", model_url: str = None
         line = line.strip()
         if not line:
             continue
-        # some outputs come back as  foo", "bar", "#baz  on one line -> split them
-        for part in re.split(r'"\s*,\s*"', line):
-            cleaned = re.sub(r"^\d+[\.\-\)\s]*", "", part)
-            cleaned = re.sub(r"\(.*?\)|\[.*?\]", "", cleaned)
-            cleaned = cleaned.strip().strip('"').strip("'").strip()
-            cleaned = cleaned.strip('"').strip("'").strip()  # strip doubled quotes
-            if cleaned:
-                keywords.append(cleaned)
+        cleaned = re.sub(r"^\d+[\.\-\)\s]*", "", line)
+        cleaned = re.sub(r"\(.*?\)|\[.*?\]", "", cleaned)
+        cleaned = cleaned.strip('"').strip("'").strip()
+        if cleaned:
+            keywords.append(cleaned)
 
     logger.info(f"Generated {len(keywords)} raw keywords for topic: {topic}")
     return keywords
