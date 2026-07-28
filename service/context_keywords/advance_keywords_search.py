@@ -98,11 +98,14 @@ def keywords_mistral(topic: str, context_source: str = "", model_url: str = None
         line = line.strip()
         if not line:
             continue
-        cleaned = re.sub(r"^\d+[\.\-\)\s]*", "", line)
-        cleaned = re.sub(r"\(.*?\)|\[.*?\]", "", cleaned)
-        cleaned = cleaned.strip('"').strip("'").strip()
-        if cleaned:
-            keywords.append(cleaned)
+        # some outputs come back as  foo", "bar", "#baz  on one line -> split them
+        for part in re.split(r'"\s*,\s*"', line):
+            cleaned = re.sub(r"^\d+[\.\-\)\s]*", "", part)
+            cleaned = re.sub(r"\(.*?\)|\[.*?\]", "", cleaned)
+            cleaned = cleaned.strip().strip('"').strip("'").strip()
+            cleaned = cleaned.strip('"').strip("'").strip()  # strip doubled quotes
+            if cleaned:
+                keywords.append(cleaned)
 
     logger.info(f"Generated {len(keywords)} raw keywords for topic: {topic}")
     return keywords
