@@ -13,6 +13,9 @@ from service.context_keywords.advance_keywords_search import (
     keywords_mistral,
 )
 
+from utils.query_builder import build_boolean_queries
+from utils.social_search_builder import generate_social_search_links
+
 topic_orchestrator_router = APIRouter(
     prefix="/topic",
     tags=["topic-orchestration"],
@@ -126,6 +129,14 @@ def update_topic_context(request: ContextUpdateRequest):
                 detail="keyword generation failed",
             )
 
+
+    # BOOLEAN QUERY and SOCIAL SEARCH LINKS
+
+    if keywords:
+        boolean_query = build_boolean_queries(keywords, mode="OR")
+
+        social_links = generate_social_search_links()
+
     # RESPONSE
 
     return ContextUpdateResponse(
@@ -133,4 +144,6 @@ def update_topic_context(request: ContextUpdateRequest):
         examples=examples,
         context_source=serp_context if serp_context else request.context_source,
         keywords=keywords,
+        boolean_query=boolean_query,
+        social_links=social_links,
     )

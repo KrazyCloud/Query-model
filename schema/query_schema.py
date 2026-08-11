@@ -39,6 +39,8 @@ class ContextUpdateResponse(BaseModel):
     examples: List[ExampleItem] = []
     context_source: str = ""
     keywords: List[str] = []
+    boolean_query: str = ""
+    social_links: Dict[str, Dict[str, Dict[str, Any]]]
 
 
 class ContextMode(str, Enum):
