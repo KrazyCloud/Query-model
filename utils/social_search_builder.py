@@ -1,4 +1,5 @@
-# TODO Pintrest, Instagram be added
+
+# TODO Pinterest, Instagram be added
 
 # =====================================================
 # BASE URLS (single source of truth per platform)
@@ -15,293 +16,197 @@ INSTAGRAM_HASHTAG_BASE = "https://www.instagram.com/explore/tags/"
 GOOGLE_SITE_BASE = "https://www.google.com/search?q="
 
 
+# =====================================================
+# FILTER CONFIGURATION HELPER
+# =====================================================
+
+def create_filter(url):
+    return {
+        "filters": url,
+        "keywords": [],
+        "active_filter": False
+    }
+
+
+# =====================================================
+# SOCIAL SEARCH LINKS
+# =====================================================
+
 def generate_social_search_links():
 
     return {
 
         # =================================================
-        # 🐦 TWITTER / X
+        # TWITTER / X
         # =================================================
 
         "twitter": {
 
-            "exact_phrase": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\"",
+            "exact_phrase": create_filter(
+                TWITTER_BASE + '"{keyword}"'
+            ),
 
-                "keywords": []
-            },
+            "hashtag_phrase": create_filter(
+                TWITTER_BASE + '("{keyword}" OR #{keyword})'
+            ),
 
-            "hashtag_phrase": {
-                "filters":
-                    TWITTER_BASE + "(\"{keyword}\" OR #{keyword})",
+            "latest": create_filter(
+                TWITTER_BASE + '"{keyword}"&f=live'
+            ),
 
-                "keywords": []
-            },
+            "verified_accounts": create_filter(
+                TWITTER_BASE + '"{keyword}" filter:verified'
+            ),
 
-            "latest": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\"&f=live",
+            "viral_posts": create_filter(
+                TWITTER_BASE + '"{keyword}" min_faves:1000'
+            ),
 
-                "keywords": []
-            },
+            "videos_only": create_filter(
+                TWITTER_BASE + '"{keyword}" filter:videos'
+            ),
 
-            "verified_accounts": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" filter:verified",
+            "images_only": create_filter(
+                TWITTER_BASE + '"{keyword}" filter:images'
+            ),
 
-                "keywords": []
-            },
+            "links_only": create_filter(
+                TWITTER_BASE + '"{keyword}" filter:links'
+            ),
 
-            "viral_posts": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" min_faves:1000",
+            "hindi_only": create_filter(
+                TWITTER_BASE + '"{keyword}" lang:hi'
+            ),
 
-                "keywords": []
-            },
+            "english_only": create_filter(
+                TWITTER_BASE + '"{keyword}" lang:en'
+            ),
 
-            "videos_only": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" filter:videos",
+            "exclude_memes": create_filter(
+                TWITTER_BASE + '"{keyword}" -meme'
+            ),
 
-                "keywords": []
-            },
+            "exclude_replies": create_filter(
+                TWITTER_BASE + '"{keyword}" -filter:replies'
+            ),
 
-            "images_only": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" filter:images",
-
-                "keywords": []
-            },
-
-            "links_only": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" filter:links",
-
-                "keywords": []
-            },
-
-            "hindi_only": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" lang:hi",
-
-                "keywords": []
-            },
-
-            "english_only": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" lang:en",
-
-                "keywords": []
-            },
-
-            "exclude_memes": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" -meme",
-
-                "keywords": []
-            },
-
-            "exclude_replies": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" -filter:replies",
-
-                "keywords": []
-            },
-
-            "replies_only": {
-                "filters":
-                    TWITTER_BASE + "\"{keyword}\" filter:replies",
-
-                "keywords": []
-            },
+            "replies_only": create_filter(
+                TWITTER_BASE + '"{keyword}" filter:replies'
+            ),
         },
 
         # =================================================
-        # 📺 YOUTUBE
+        # YOUTUBE
         # =================================================
 
         "youtube": {
 
-            "basic": {
-                "filters":
-                    YOUTUBE_BASE + "{keyword}",
+            "basic": create_filter(
+                YOUTUBE_BASE + "{keyword}"
+            ),
 
-                "keywords": []
-            },
+            "news": create_filter(
+                YOUTUBE_BASE + "{keyword} news"
+            ),
 
-            "news": {
-                "filters":
-                    YOUTUBE_BASE + "{keyword} news",
+            "debate": create_filter(
+                YOUTUBE_BASE + "{keyword} debate"
+            ),
 
-                "keywords": []
-            },
+            "analysis": create_filter(
+                YOUTUBE_BASE + "{keyword} analysis"
+            ),
 
-            "debate": {
-                "filters":
-                    YOUTUBE_BASE + "{keyword} debate",
+            "shorts": create_filter(
+                YOUTUBE_BASE + "{keyword} shorts"
+            ),
 
-                "keywords": []
-            },
-
-            "analysis": {
-                "filters":
-                    YOUTUBE_BASE + "{keyword} analysis",
-
-                "keywords": []
-            },
-
-            "shorts": {
-                "filters":
-                    YOUTUBE_BASE + "{keyword} shorts",
-
-                "keywords": []
-            },
-
-            "live": {
-                "filters":
-                    YOUTUBE_BASE + "{keyword} live",
-
-                "keywords": []
-            }
+            "live": create_filter(
+                YOUTUBE_BASE + "{keyword} live"
+            ),
         },
 
         # =================================================
-        # 👽 REDDIT
+        # REDDIT
         # =================================================
 
         "reddit": {
 
-            "exact_phrase": {
-                "filters":
-                    REDDIT_BASE + "\"{keyword}\"",
+            "exact_phrase": create_filter(
+                REDDIT_BASE + '"{keyword}"'
+            ),
 
-                "keywords": []
-            },
+            "top_posts": create_filter(
+                REDDIT_BASE + '"{keyword}"&sort=top'
+            ),
 
-            "top_posts": {
-                "filters":
-                    REDDIT_BASE + "\"{keyword}\"&sort=top",
+            "new_posts": create_filter(
+                REDDIT_BASE + '"{keyword}"&sort=new'
+            ),
 
-                "keywords": []
-            },
-
-            "new_posts": {
-                "filters":
-                    REDDIT_BASE + "\"{keyword}\"&sort=new",
-
-                "keywords": []
-            },
-
-            "india_discussions": {
-                "filters":
-                    REDDIT_BASE + "\"{keyword}\" subreddit:india",
-
-                "keywords": []
-            }
+            "india_discussions": create_filter(
+                REDDIT_BASE + '"{keyword}" subreddit:india'
+            ),
         },
 
         # =================================================
-        # ❓ QUORA
+        # QUORA
         # =================================================
 
         "quora": {
 
-            "exact_phrase": {
-                "filters":
-                    QUORA_BASE + "\"{keyword}\"",
+            "exact_phrase": create_filter(
+                QUORA_BASE + '"{keyword}"'
+            ),
 
-                "keywords": []
-            },
+            "politics": create_filter(
+                QUORA_BASE + "{keyword} politics"
+            ),
 
-            "politics": {
-                "filters":
-                    QUORA_BASE + "{keyword} politics",
-
-                "keywords": []
-            },
-
-            "public_opinion": {
-                "filters":
-                    QUORA_BASE + "{keyword} public opinion",
-
-                "keywords": []
-            }
+            "public_opinion": create_filter(
+                QUORA_BASE + "{keyword} public opinion"
+            ),
         },
 
         # =================================================
-        # 📌 PINTEREST
+        # PINTEREST
         # =================================================
-        # Pinterest search has NO boolean support (no OR, no
-        # exact-phrase quoting, no exclude). It's pure semantic
-        # ranking on whatever text follows ?q=. {keyword} is
-        # substituted as-is (URL-encoded at call time).
 
         "pinterest": {
 
-            "pins": {
-                "filters":
-                    PINTEREST_PINS_BASE + "{keyword}",
+            "pins": create_filter(
+                PINTEREST_PINS_BASE + "{keyword}"
+            ),
 
-                "keywords": []
-            },
+            "boards": create_filter(
+                PINTEREST_BOARDS_BASE + "{keyword}"
+            ),
 
-            "boards": {
-                "filters":
-                    PINTEREST_BOARDS_BASE + "{keyword}",
+            "users": create_filter(
+                PINTEREST_USERS_BASE + "{keyword}"
+            ),
 
-                "keywords": []
-            },
+            "idea_pins": create_filter(
+                PINTEREST_PINS_BASE + "{keyword} ideas"
+            ),
 
-            "users": {
-                "filters":
-                    PINTEREST_USERS_BASE + "{keyword}",
-
-                "keywords": []
-            },
-
-            "idea_pins": {
-                "filters":
-                    PINTEREST_PINS_BASE + "{keyword} ideas",
-
-                "keywords": []
-            },
-
-            "diy": {
-                "filters":
-                    PINTEREST_PINS_BASE + "{keyword} diy",
-
-                "keywords": []
-            }
+            "diy": create_filter(
+                PINTEREST_PINS_BASE + "{keyword} diy"
+            ),
         },
 
         # =================================================
-        # 📷 INSTAGRAM
+        # INSTAGRAM
         # =================================================
-        # Instagram has NO public keyword-search page (the real
-        # search endpoint requires an authenticated session).
-        # The only unauthenticated, crawlable surface is a
-        # hashtag page, which means {keyword} MUST be a single
-        # word with no spaces/punctuation for these to resolve
-        # (e.g. "COCKROACHJANTAPARTY", not "Cockroach Janta
-        # Party"). For multi-word phrases, use the google_site
-        # fallback instead, same pattern as the Reddit/Quora
-        # fallback in your doc.
 
         "instagram": {
 
-            "hashtag": {
-                "filters":
-                    INSTAGRAM_HASHTAG_BASE + "{keyword}/",
+            "hashtag": create_filter(
+                INSTAGRAM_HASHTAG_BASE + "{keyword}/"
+            ),
 
-                "keywords": []
-            },
-
-            "google_site_fallback": {
-                "filters":
-                    GOOGLE_SITE_BASE + "site:instagram.com+\"{keyword}\"",
-
-                "keywords": []
-            }
-        }
+            "google_site_fallback": create_filter(
+                GOOGLE_SITE_BASE + 'site:instagram.com+"{keyword}"'
+            ),
+        },
     }
