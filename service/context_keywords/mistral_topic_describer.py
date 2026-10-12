@@ -11,30 +11,66 @@ def generate_topic_description(topic, context="", model_url=f"http://{MISTRAL_AP
     Generate a structured annotation rubric for a sentiment/stance classifier.
     Returns {"topic_description": str, "examples": [...]}.
     """
+#     prompt = f"""
+# You are an analyst writing a labeling rubric for a social media sentiment and stance classifier focused on India.
+
+# Topic: "{topic}"
+# News / API context: "{context}"
+
+# Produce a JSON object with exactly two keys:
+
+# 1. "topic_description": a 3-5 sentence note that explains:
+#    - what the topic is and why it matters on Indian social media
+#    - the stance landscape: who supports it, who opposes it, and what language/hashtags each side uses
+#    - any traps for a classifier — e.g. sarcasm, reclaimed insults, in-group symbols, or words that mean the opposite of their surface tone in this context
+
+# 2. "examples": an array of 3 short demonstration items. Each must be an object with:
+#    - "text": a realistic example post (may mix Hindi/English as seen on Indian social media)
+#    - "relevance": "on_topic" or "off_topic"
+#    - "stance": "support", "oppose", or "neutral"
+#    - "sentiment": "positive", "negative", or "neutral"
+#    - "spam": true or false
+#    Include at least one off_topic/spam example and one example that demonstrates a trap from the description.
+
+# Rules:
+# - Base the description on the provided context. Prefer hashtags and phrases that appear in or are directly implied by the context.
+# - IMPORTANT: Some movements adopt an insult as their own badge. Before assigning stance, check the context: if a seemingly-derogatory term (an animal, an insult) is used by supporters about themselves, then that language is PRO the movement, and attacks come from the opposite framing. State which case applies in the description.
+# - Output ONLY the raw JSON object. No markdown, no code fences, no preamble.
+# """
+
     prompt = f"""
-You are an analyst writing a labeling rubric for a social media sentiment and stance classifier focused on India.
+You are an analyst writing a neutral labeling rubric for a social media sentiment and stance classifier focused on India.
 
 Topic: "{topic}"
 News / API context: "{context}"
 
+LABEL DEFINITIONS (very important):
+Both labels are measured toward the TOPIC itself ("{topic}"), not the emotional tone of the post.
+- stance: "support" = the post backs the topic or its cause (even if angry at its opponents); "oppose" = the post criticizes or dismisses the topic or its cause (even if polite); "neutral" = no clear position (news reporting, questions, off-topic).
+- sentiment: "positive" = favorable toward the topic; "negative" = unfavorable toward the topic; "neutral" = neither.
+- Normally support = positive, oppose = negative, neutral = neutral. Only deviate if the post clearly shows a mixed case, and then explain it in the description.
+
 Produce a JSON object with exactly two keys:
 
 1. "topic_description": a 3-5 sentence note that explains:
-   - what the topic is and why it matters on Indian social media
-   - the stance landscape: who supports it, who opposes it, and what language/hashtags each side uses
-   - any traps for a classifier — e.g. sarcasm, reclaimed insults, in-group symbols, or words that mean the opposite of their surface tone in this context
+   - what the topic is and why it matters in India
+   - what "support" and "oppose" mean for this specific topic, in one line
+   - the main sides and their arguments, given equal weight and attributed to each side (e.g. "critics say...", "the government states...")
+   - hashtags or phrases each side uses ONLY if they appear in the context; otherwise write "no specific hashtags stated in context"
+   - classifier traps ONLY if the context shows them (sarcasm, a group adopting an insult as its own name, in-group symbols, words whose tone is reversed in this context). If none, write "no specific traps identified". Do not invent any.
 
 2. "examples": an array of 3 short demonstration items. Each must be an object with:
-   - "text": a realistic example post (may mix Hindi/English as seen on Indian social media)
+   - "text": a realistic example post (may mix Hindi/English)
    - "relevance": "on_topic" or "off_topic"
    - "stance": "support", "oppose", or "neutral"
    - "sentiment": "positive", "negative", or "neutral"
    - "spam": true or false
-   Include at least one off_topic/spam example and one example that demonstrates a trap from the description.
+   Include at least one off_topic/spam example, and include examples from both sides, not just one. If the description names a trap, one example should show it. Use only terms found in the context.
 
 Rules:
-- Base the description on the provided context. Prefer hashtags and phrases that appear in or are directly implied by the context.
-- IMPORTANT: Some movements adopt an insult as their own badge. Before assigning stance, check the context: if a seemingly-derogatory term (an animal, an insult) is used by supporters about themselves, then that language is PRO the movement, and attacks come from the opposite framing. State which case applies in the description.
+- Use only facts in the provided context. Do not add outside knowledge or invent hashtags, slogans, or slang.
+- Do not state contested allegations as facts. Attribute them to the side that makes them.
+- If a seemingly derogatory term is used by supporters about themselves in the context, say so explicitly. Do not assume this unless the context shows it.
 - Output ONLY the raw JSON object. No markdown, no code fences, no preamble.
 """
     logger.info(f"Generating topic description rubric for: {topic}")
