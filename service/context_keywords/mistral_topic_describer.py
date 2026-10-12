@@ -57,8 +57,8 @@ Produce a JSON object with exactly two keys:
    - what "support" and "oppose" mean for this specific topic, in one line
    - the stated trigger or reason for the topic, and every named person and place in the context (including founders and leaders), each with its side or role
    - the main sides and their arguments, given equal weight and attributed to each side (e.g. "critics say...", "the government states..."). If one side's description of events is disputed (e.g. police calling a gathering "illegal"), attribute it to that side
-   - key actions and events that shape how people react (e.g. police action, detentions, closures, court orders, official statements)
-   - how to read posts about related actors: say whether criticizing or praising each actor (e.g. police, the Election Commission, the government) typically signals support or opposition toward the topic
+   - key actions and events that shape how people react (e.g. police action, detentions, closures, court orders, official statements). Include who describes an action in which way, e.g. "police detained them for an unpermitted gathering"
+   - how to read posts about related actors: say whether criticizing or praising each actor's SPECIFIC conduct in this topic (e.g. the police response, the voter list revision) typically signals support or opposition toward the topic. Do not generalize to unrelated praise or criticism of the same actor.
    - hashtags or phrases each side uses ONLY if they appear in the context; otherwise write "no specific hashtags stated in context"
    - classifier traps ONLY if the context shows them. Check specifically: (a) a movement, group or hashtag whose NAME contains a word that would normally be an insult or negative term (say it is a name, not an insult, and that posts using it may be supportive); (b) sarcasm or in-group symbols; (c) words whose tone is reversed in this context. List every trap found. Write "no specific traps identified" ONLY if you found none. Never write both.
 
