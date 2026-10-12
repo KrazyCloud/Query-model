@@ -52,12 +52,15 @@ Both labels are measured toward the TOPIC itself ("{topic}"), not the emotional 
 
 Produce a JSON object with exactly two keys:
 
-1. "topic_description": a 3-5 sentence note that explains:
-   - what the topic is and why it matters in India
+1. "topic_description": a 5-7 sentence note that covers ALL of the following, using only the context:
+   - what the topic is, when it is happening, and why it matters in India
    - what "support" and "oppose" mean for this specific topic, in one line
    - the main sides and their arguments, given equal weight and attributed to each side (e.g. "critics say...", "the government states...")
+   - key people and organizations named in the context and which side each is on (so the classifier can recognize them in posts)
+   - key actions and events that shape how people react (e.g. police action, detentions, closures, court orders, official statements)
+   - how to read posts about related actors: say whether criticizing or praising each actor (e.g. police, the Election Commission, the government) usually signals support or opposition toward the topic
    - hashtags or phrases each side uses ONLY if they appear in the context; otherwise write "no specific hashtags stated in context"
-   - classifier traps ONLY if the context shows them (sarcasm, a group adopting an insult as its own name, in-group symbols, words whose tone is reversed in this context). If none, write "no specific traps identified". Do not invent any.
+   - classifier traps ONLY if the context shows them. Check specifically: (a) a movement, group or hashtag whose NAME contains a word that would normally be an insult or negative term (say it is a name, not an insult, and that posts using it may be supportive); (b) sarcasm or in-group symbols; (c) words whose tone is reversed in this context. If none, write "no specific traps identified". Do not invent any.
 
 2. "examples": an array of 3 short demonstration items. Each must be an object with:
    - "text": a realistic example post (may mix Hindi/English)
@@ -65,20 +68,24 @@ Produce a JSON object with exactly two keys:
    - "stance": "support", "oppose", or "neutral"
    - "sentiment": "positive", "negative", or "neutral"
    - "spam": true or false
-   Include at least one off_topic/spam example, and include examples from both sides, not just one. If the description names a trap, one example should show it. Use only terms found in the context.
+   Include at least one off_topic/spam example, and include examples from both sides, not just one. If the description names a trap, one example should show it. Use only names and terms found in the context.
 
 Rules:
 - Use only facts in the provided context. Do not add outside knowledge or invent hashtags, slogans, or slang.
 - Do not state contested allegations as facts. Attribute them to the side that makes them.
+- If the context describes an action against one side (arrests, bans, crackdowns), say that posts criticizing the action usually support the affected side.
 - If a seemingly derogatory term is used by supporters about themselves in the context, say so explicitly. Do not assume this unless the context shows it.
 - Output ONLY the raw JSON object. No markdown, no code fences, no preamble.
 """
+    
     logger.info(f"Generating topic description rubric for: {topic}")
     payload = {
         "model": "mistralai/Mistral-Small-3.1-24B-Instruct-2503",
         "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 1024,
-        "temperature": 0.2,
+        # "max_tokens": 1024,
+        # "temperature": 0.2,
+        "max_tokens":1500,
+        "temperature": 0.0,
         "stream": False,
     }
 
