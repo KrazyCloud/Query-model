@@ -52,15 +52,15 @@ Both labels are measured toward the TOPIC itself ("{topic}"), not the emotional 
 
 Produce a JSON object with exactly two keys:
 
-1. "topic_description": a 5-7 sentence note that covers ALL of the following, using only the context:
+1. "topic_description": a 5-8 sentence note that covers ALL of the following, using only the context:
    - what the topic is, when it is happening, and why it matters in India
    - what "support" and "oppose" mean for this specific topic, in one line
-   - the main sides and their arguments, given equal weight and attributed to each side (e.g. "critics say...", "the government states...")
-   - key people and organizations named in the context and which side each is on (so the classifier can recognize them in posts)
+   - the stated trigger or reason for the topic, and every named person and place in the context (including founders and leaders), each with its side or role
+   - the main sides and their arguments, given equal weight and attributed to each side (e.g. "critics say...", "the government states..."). If one side's description of events is disputed (e.g. police calling a gathering "illegal"), attribute it to that side
    - key actions and events that shape how people react (e.g. police action, detentions, closures, court orders, official statements)
-   - how to read posts about related actors: say whether criticizing or praising each actor (e.g. police, the Election Commission, the government) usually signals support or opposition toward the topic
+   - how to read posts about related actors: say whether criticizing or praising each actor (e.g. police, the Election Commission, the government) typically signals support or opposition toward the topic
    - hashtags or phrases each side uses ONLY if they appear in the context; otherwise write "no specific hashtags stated in context"
-   - classifier traps ONLY if the context shows them. Check specifically: (a) a movement, group or hashtag whose NAME contains a word that would normally be an insult or negative term (say it is a name, not an insult, and that posts using it may be supportive); (b) sarcasm or in-group symbols; (c) words whose tone is reversed in this context. If none, write "no specific traps identified". Do not invent any.
+   - classifier traps ONLY if the context shows them. Check specifically: (a) a movement, group or hashtag whose NAME contains a word that would normally be an insult or negative term (say it is a name, not an insult, and that posts using it may be supportive); (b) sarcasm or in-group symbols; (c) words whose tone is reversed in this context. List every trap found. Write "no specific traps identified" ONLY if you found none. Never write both.
 
 2. "examples": an array of 3 short demonstration items. Each must be an object with:
    - "text": a realistic example post (may mix Hindi/English)
@@ -75,6 +75,7 @@ Rules:
 - Do not state contested allegations as facts. Attribute them to the side that makes them.
 - If the context describes an action against one side (arrests, bans, crackdowns), say that posts criticizing the action usually support the affected side.
 - If a seemingly derogatory term is used by supporters about themselves in the context, say so explicitly. Do not assume this unless the context shows it.
+- Ignore any non-content lines in the context (e.g. "Watch this video...").
 - Output ONLY the raw JSON object. No markdown, no code fences, no preamble.
 """
     
