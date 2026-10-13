@@ -21,7 +21,7 @@ class ContextUpdateResponse(BaseModel):
     context_source: str = ""
     keywords: List[str] = []
     boolean_query: str = ""
-    social_links: Dict[str, Dict[str, Dict[str, Any]]]
+    social_links: Dict[str, Dict[str, Dict[str, Any]]] = {}
 
 
 class ContextMode(str, Enum):

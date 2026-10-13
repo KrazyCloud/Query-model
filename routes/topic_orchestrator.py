@@ -57,6 +57,8 @@ def update_topic_context(request: ContextUpdateRequest):
     info_used = []
     examples = []
     keywords = []
+    boolean_query = ""
+    social_links = {}
 
 
     # FULL / CONTEXT_ONLY
