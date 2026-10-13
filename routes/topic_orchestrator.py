@@ -1,3 +1,5 @@
+# topic_orchestrator.py
+
 from fastapi import APIRouter, HTTPException
 from logs import logger
 from schema.query_schema import (
@@ -8,6 +10,7 @@ from schema.query_schema import (
 from service.serapi.serpapi_context import fetch_ai_mode_context
 from service.context_keywords.mistral_topic_describer import (
     generate_topic_description,
+    generate_report_overview,
 )
 from service.context_keywords.advance_keywords_search import (
     keywords_mistral,
@@ -50,8 +53,11 @@ def update_topic_context(request: ContextUpdateRequest):
 
     serp_context = ""
     topic_description = ""
+    report_overview = ""
+    info_used = []
     examples = []
     keywords = []
+
 
     # FULL / CONTEXT_ONLY
 
@@ -94,6 +100,11 @@ def update_topic_context(request: ContextUpdateRequest):
             if isinstance(e, dict)
             and REQUIRED_EXAMPLE_KEYS <= e.keys()
         ]
+
+        overview = generate_report_overview(topic, serp_context)
+        report_overview = overview["report_overview"]
+        info_used = overview["info_used"]
+
 
     # KEYWORD GENERATION
 
@@ -141,6 +152,8 @@ def update_topic_context(request: ContextUpdateRequest):
 
     return ContextUpdateResponse(
         topic_description=topic_description,
+        report_overview=report_overview,
+        info_used=info_used,
         examples=examples,
         context_source=serp_context if serp_context else request.context_source,
         keywords=keywords,
